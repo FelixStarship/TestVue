@@ -26,5 +26,10 @@ namespace TestVue.Controllers
 
             return View();
         }
+
+        public ActionResult Vue01()
+        {
+            return View();
+        }
     }
 }

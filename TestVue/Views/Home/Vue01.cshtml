@@ -1,0 +1,239 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Vue01</title>
+    <style type="text/css">
+        .bg {
+            background: dodgerblue;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="app1">
+        {{message}}
+    </div>
+    <div id="app2">
+        <span v-bind:title="message">
+            把鼠标放到这里试试!
+        </span>
+    </div>
+    <div id="app3">
+        <span v-if="isShow">
+            isShow为true时可以看到我哦!
+        </span>
+    </div>
+    <div id="app4" class="container">
+        <table class="table" v-if="isShow">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th>价格</th>
+                </tr>
+                <tr v-for="(obj,index) in fruits">
+                    <td>{{index+1}}</td>
+                    <td>{{obj.name}}</td>
+                    <td>{{obj.price}}</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="app5">
+        <button v-on:click="showMe">{{message}}</button>
+        <input v-model="message" />
+    </div>
+    <div id="app6">
+        <button v-on:click="count">+</button>
+        <input v-model="n1" />+
+        <input v-model="n2" />=
+        <input v-model="sum" />
+        <p>{{sum}}</p>
+    </div>
+    <div id="app7">
+
+        <ol>
+            <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+        </ol>
+    </div>
+
+    <div id="app8">
+        <h2>购物车</h2>
+        <table border="1" class="table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(pdt,index) in products" v-bind:class="{bg:index%2==0}">
+                    <td>{{index+1}}</td>
+                    <td>{{pdt.title}}</td>
+                    <td>{{pdt.price}}</td>
+                    <td>
+                        <button v-on:click="pdt.quantity<=0?0:(pdt.quantity-=1)">-</button>
+                        <input v-model="pdt.quantity" v-on:keyup="pdt.quantity=(pdt.quantity<0?0:pdt.quantity)" />
+                        <button v-on:click="pdt.quantity+=1">+</button>
+                    </td>
+                    <td>
+                      {{pdt.quantity*pdt.price|currency(1)}}
+                    </td>
+                    <td>
+                      <button v-on:click="remove(index)">移除</button>
+                    </td>
+                </tr>
+                <tr>
+                  <td colspan="6" align="right">
+                      {{total|currency}}
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="~/Scripts/vue.js"></script>
+    <script type="text/javascript">
+        var app1 = new Vue({
+            el: "#app1",
+            data: {
+                message: "Hello Vue2!"
+            }
+        })
+        var app2 = new Vue({
+            el: "#app2",
+            data: {
+                message: "页面加载时间是:" + new Date().toLocaleDateString()
+            }
+        });
+        var app3 = new Vue({
+            el: "#app3",
+            data: {
+                isShow: true
+            }
+        })
+        var app4 = new Vue({
+            el: "#app4",
+            data: {
+                isShow: true,
+                fruits: [{
+                    name: "苹果",
+                    price: "6.8"
+                }, {
+                    name: "橙子",
+                    price: "3.4"
+                }, {
+                    name: "香蕉",
+                    price: "5.8"
+                }]
+            }
+        });
+        var app5 = new Vue({
+            el: "#app5",
+            data: {
+                message: "vue2事件!"
+            },
+            methods: {
+                showMe: function () {
+                    this.message = this.message.split('').reverse().join('');
+                }
+            }
+        })
+        var app6 = new Vue({
+            el: "#app6",
+            data: {
+                n1: 0,
+                n2: 0,
+                sum: 0    //页面上会显示NaN
+            },
+            methods: {
+                count: function () {
+                    this.n1 += 1;
+                    return this.sum = parseInt(this.n1) + parseInt(this.n2);
+                }
+            }
+        })
+        //全局注册组件
+        Vue.component("todo-item", {
+            props: ['todo'],
+            template: "<li>{{todo.text}}</li>"
+        })
+        var app7 = new Vue({
+            el: "#app7",
+            data: {
+                groceryList: [{
+                    id: 0, text: "蔬菜"
+                },
+                {
+                    id: 1, text: "奶酪"
+                },
+                {
+                    id: 2, text: "随便其他人吃的什么东西!"
+                }]
+            }
+        })
+
+        //全局过滤器
+        Vue.filter("currency", function (v,n) {
+            if (!v)
+                return "";
+            return "￥" + v.toFixed(n || 2);
+        });
+        var app8 = new Vue({
+            el: "#app8",
+            data: {
+                orderby: "",
+                isAsc: true,
+                products: [{
+                    title: "paint pot",
+                    quantity: 17,
+                    price: 12.3
+                }, {
+                    title: "polka dots",
+                    quantity: 17,
+                    price: 12.3
+                }, {
+                    title: "pebbles",
+                    quantity: 5,
+                    price: 12.3
+                }, {
+                    title: "Mi Note5",
+                    quantity: 8,
+                    price: 2985.6
+                }, {
+                    title: "iPhone XS",
+                    quantity: 10,
+                    price: 8906.72
+                }]
+            },
+            computed: {
+                total: function () {
+                    var sum = 0;
+                    for (var i = 0; i < this.products.length ; i++) {
+                        sum += (Number(this.products[i].price) * Number(this.products[i].quantity));
+                    }
+                    return sum;
+                }
+            },
+            methods: {
+                remove: function (i) {
+                    if (confirm("你确定要移除吗!")) {
+                        this.products.splice(i, 1);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
