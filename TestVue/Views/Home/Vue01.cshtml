@@ -187,7 +187,7 @@
         //全局过滤器
         Vue.filter("currency", function (v,n) {
             if (!v)
-                return "";
+                return "￥"+0;
             return "￥" + v.toFixed(n || 2);
         });
         var app8 = new Vue({
@@ -221,11 +221,11 @@
                 total: function () {
                     var sum = 0;
                     for (var i = 0; i < this.products.length ; i++) {
-                        sum += (Number(this.products[i].price) * Number(this.products[i].quantity));
+                        sum += (Number(this.products[i].price) * Number(this.products[i].quantity));    //计算属性
                     }
                     return sum;
                 }
-            },
+            },    
             methods: {
                 remove: function (i) {
                     if (confirm("你确定要移除吗!")) {

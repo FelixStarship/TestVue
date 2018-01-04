@@ -1,0 +1,281 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div id="app1">
+        <input type="text" v-model="a" />
+    </div>
+    <div id="app2">
+        <p>
+            a:
+            <input type="text" v-model="a" />{{a}}<br />
+            b:
+            <input type="text" v-model="b" />{{b}}<br />
+            z:
+            <input type="text" v-model="c.x.y.z" />{{c.x.y.z}}<br />
+            d:
+            <input type="text" v-model="d" />{{d}}
+        </p>
+        <p>
+            n:<input type="text" v-model="c.x.y.n" />{{c.x.y.n}}
+        </p>
+    </div>
+    <div id="app3">
+        <span v-for="n in items">{{n}}</span>
+
+        <button @@click="indexOfMethod">indexOf()找到的元素位置</button>
+        <button @@click="filterMethod">filter()过滤器</button>
+        <button @@click="forEachMethod">forEach()迭代</button>
+        <button @@click="mapMethod">map()映射</button>
+        <button @@click="reduceMethod">reduce()累加器</button>
+    </div>
+
+    <div id="app4">
+        <p>
+            <label for="name">姓名</label>
+            <input v-model="name" id="name" name="name" value="tom" />值：
+            <span v-text="name"></span><span v-html="name"></span>
+        </p>
+        <p>
+            <label>爱好</label>
+            <input type="checkbox" v-model="hobbies" value="代码" id="hobbies1" />
+            <label for="hobbies1">代码</label>
+            <input type="checkbox" v-model="hobbies" value="追剧" id="hobbies2" />
+            <label for="hobbies1">追剧</label>
+            <input type="checkbox" v-model="hobbies" value="音乐" id="hobbies3" />
+            <label for="hobbies1">音乐</label>值：{{hobbies.join(',')}}
+        </p>
+        <p>
+            <label>性别</label>
+            <input type="radio" v-model="sex" value="男" id="sex1" />
+            <label for="sex1">男</label>
+            <input type="radio" v-model="sex" value="女" id="sex2" />
+            <label for="sex1">女</label>
+            <input type="radio" v-model="sex" value="保密" id="sex3" />
+            <label for="sex1">保密</label>值：{{sex}}
+        </p>
+        <p>
+            <label>熟练</label>
+            <select v-model="skill">
+                <option value="C#">C#</option>
+                <option value="前端">前端</option>
+                <option value="SQLServer">SQLServer</option>
+                <option value="">--请选择--</option>
+            </select>
+            值：{{skill}}
+        </p>
+        <p>
+            <label>擅长</label>
+            <select v-model="skill2" multiple="multiple" size="3">
+                <option value="C#">C#</option>
+                <option value="前端">前端</option>
+                <option value="SQLServer">SQLServer</option>
+            </select>
+            值：{{skill2}}
+        </p>
+        <p>
+            <input type="checkbox" v-model="isAllow" />
+            <label for="isAllow">同意本网站协定</label>
+            值：{{isAllow==true?"同意":"不同意"}}
+        </p>
+        <p>
+            <input type="checkbox" v-model="isOK" />
+            <label for="isAllow">同意本网站协定</label>
+            值：{{isOK==true?"同意":"不同意"}}
+        </p>
+        <p>
+            <input type="checkbox" v-model="isOK2" />
+            <label for="isAllow">同意本网站协定</label>
+            值：{{isOK2==true?"同意":"不同意"}}
+        </p>
+        <p>
+            <input type="radio" v-model="isSend" name="isSend" value="发送" />发送
+            <input type="radio" v-model="isSend" name="isSend" value="不发送" />不发送
+        </p>
+        <p>
+            <label>等级</label>
+            <select v-model="grade">
+                <option v-bin:value="{level:1}">A级</option>
+                <option v-bin:value="{level:2}">B级</option>
+                <option v-bin:value="{level:3}">C级</option>
+            </select>
+            值：{{grade.level}}
+        </p>
+        <p>
+            <label for="name">姓名</label>
+            <textarea rows="5" cols="50">{{name}}</textarea>
+        </p>
+        <p>
+          <label>年龄</label>
+          <input v-model.number="age" type="text" />值：{{age}}
+          类型：{{typeof(age)}}
+        </p>
+        <p>
+            <label>年龄</label>
+            <input v-model="age" type="text" />值：{{age}}
+            类型：{{typeof(age)}}
+        </p>
+        <p>
+          <label>学生</label>
+          <input v-model.trim="student" />
+          值：{{student}}
+        </p>
+    </div>
+
+    <script src="~/Scripts/vue.js"></script>
+    <script>
+        var data = { a: 1 }
+        var app1 = new Vue({
+            el: "#app1",
+            data: data,
+            update: function () {
+                console.log("实例被更新了!");
+            }
+        });
+        var app2 = new Vue({
+            el: "#app2",
+            data: {
+                a: 1,
+                b: 2,
+                c: {
+                    x: {
+                        y: {
+                            z: 3,
+                            n: 3
+                        }
+                    }
+                },
+                d: 4
+            },
+            watch: {
+                a: function (val, oldVal) {
+                    console.log('a新:%s,原:%s', val, oldVal)
+                },
+                b: "watchb",
+                c: {           //深度监听
+                    handler: function (val, oldVal) {
+                        console.log("z新:%s,原:%s", JSON.stringify(val), JSON.stringify(oldVal));
+                    },
+                    deep: true
+                },
+                d: {
+                    handler: function (val, oldVal) {
+                        console.log('d新:%s,原:%s', val, oldVal)
+                    },
+                    immediate: true  //立即监听
+                }
+            },
+            methods: {      //计算方法
+                watchb: function (val, oldVal) {
+                    console.log('b新:%s,原:%s', val, oldVal)
+                }
+            }
+        });
+        var watchb = function (val, oldVal) {
+            console.log('b新: %s, 原: %s', val, oldVal);
+        }
+        var app3 = new Vue({
+            el: "#app3",
+            data: {
+                items: [1, 3, 7, 9, 2, 4, 6, 8, 3],
+                fruits: [{
+                    "name": "apple",
+                    "count": 2
+                },
+                        {
+                            "name": "orange",
+                            "count": 5
+                        },
+                        {
+                            "name": "pear",
+                            "count": 3
+                        },
+                        {
+                            "name": "orange",
+                            "count": 16
+                        }
+                ],
+                words: ["apple", "orange", "apple", "orange", "pear", "orange"]
+            },
+            methods: {
+                indexOfMethod: function () {
+                    console.log("数字3第一次出现的位置：" + this.items.indexOf(3));
+                    console.log("数字5第一次出现的位置：" + this.items.indexOf(5));
+                },
+                filterMethod: function () {
+                    var arr1 = this.fruits.filter(function (f) {   //过滤器
+                        return f.count >= 5;
+                    });
+                    console.log(JSON.stringify(arr1));
+                    var arr2 = this.fruits.filter(function (f) {
+                        return f.name.match(/r/igm)
+                    });
+                    console.log(JSON.stringify(arr2));
+                },
+                forEachMethod: function () {
+                    this.fruits.forEach(function (obj, index) {
+                        console.log(index + "-" + obj.name + "-" + obj.count);
+                    })
+                },
+                mapMethod: function () {
+                    var arr3 = this.fruits.map(function (obj, index) {
+                        obj.showInfo = index + "->水果:" + obj.name + ",数量:" + obj.count;
+                        return obj;
+                    });
+                    console.log(JSON.stringify(arr3));
+
+                    //https://www.cnblogs.com/yjbjingcha/p/6935191.html
+
+                    var map = this.fruits.map(function (obj) {          //场景：  须要遍历一组对象取出每一个对象的某个属性（比方id）而且用分隔符隔开
+                        if (obj.name.match(/p/igm) != null) {
+                            return obj;
+                        }
+                    });
+
+
+                    console.log(JSON.stringify(map));
+                },
+                reduceMethod: function () {    //场景： 统计一个数组中有多少个不重复的单词
+                    var objs = {};
+                    for (var i = 0; i < this.words.length ; i++) {
+                        var item = this.words[i];
+                        objs[item] = (objs[item] + 1) || 1;
+                    }
+                    console.log(JSON.stringify(objs));
+                }
+            }
+        })
+        var app4 = new Vue({
+            el: "#app4",
+            data: {
+                isShow: true,
+                name: "rose",
+                hobbies: ['代码'],
+                sex: "保密",
+                skill: "",
+                skill2: ['C#'],
+                isAllow: true,
+                isOK: "同意",
+                yes: "同意",
+                no: "不同意",
+                isOK2: "yes",
+                isSend: "不发送!",
+                grade: {
+                    name: "技术等级",
+                    level: 0
+                },
+                age: 25,
+                student:"我 是 一个好 学生!"
+            }
+        });
+
+    </script>
+</body>
+</html>

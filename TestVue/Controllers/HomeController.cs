@@ -31,5 +31,10 @@ namespace TestVue.Controllers
         {
             return View();
         }
+
+        public ActionResult Vue02()
+        {
+            return View();
+        }
     }
 }
