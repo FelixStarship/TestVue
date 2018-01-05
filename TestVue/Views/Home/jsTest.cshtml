@@ -1,0 +1,104 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>jsTest</title>
+</head>
+<body>
+    <div> 
+
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+
+        /**
+        * @@操作数组常用函数
+        */
+
+        var array1 = new Array();
+        var array2 = new Array(5);
+        var array3 = new Array("a", "b", "c", 1, 2, 3, true, false);
+        var arr4 = [];
+        var arr5 = [1, 2, 3, 4, "y", "z"];
+
+        array2[6] = "Hello World!";
+
+        console.log(array2[6]);
+
+        //遍历
+        for (var i = 0; i <array3.length ; i++) {
+            console.log("array3["+i+"]="+array3[i]);
+        }
+        //枚举
+        for (var i in array3) {
+            console.log(i + "=" + array3[i]);
+        }
+
+
+        var arr6 = [1, 4];
+
+        console.log(arr6);
+        arr6.push(9);
+
+        var len = arr6.push(10, 20);
+
+        console.log("长度为："+len+"------------"+arr6);
+
+
+        var len = arr6.unshift(10, 30, 40);
+
+        console.log("长度为："+len+"-------------"+arr6);
+
+
+        var len = arr6.splice(1, 2, "则是数据", "新添加数据");
+
+        console.log("长度为：" + len + "--------------" + arr6);
+
+        var arr7 = ["index首个元素", "next个元素", "last个元素"];
+
+        var e = arr7.pop();                /**
+                                           * @@pop删除数组最后一个元素  
+                                           */
+
+        console.log("被删除元素：" + e + "------" + arr7);
+
+        var e = arr7.shift();
+
+        console.log("被删除元素：" + e + "--------" + arr7);
+
+        var arr8 = [1, 2, 3, 4, 5, 6, 7];
+        var arr9 = [12, 13, 45, 67,10 , 78];
+        var newArr = arr8.slice(1, 3);     /**
+                                           * @@slice  截取字符而不是删除字符
+                                           */
+        console.log("被截取的元素：" + newArr + "---------------" + arr8);
+
+        /**
+        *   @@concat 合并元素
+        */
+        var arr10 = newArr.concat(arr9, "新元素", "旧元素", "新旧交替元素");
+        console.log("合并后元素："+arr10);
+        
+
+        var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        
+        console.log(numbers.join(','));
+
+        numbers.reverse();  //反转
+        console.log(numbers.join(','));
+
+
+        numbers.forEach(function (obj,index) {
+            console.log(obj+"--------"+i);
+        });
+
+
+    </script>
+</body>
+</html>

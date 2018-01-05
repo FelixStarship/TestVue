@@ -210,6 +210,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\main.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -233,7 +234,17 @@
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Home\jsTest.cshtml" />
+    <Content Include="Views\Home\ShoppingCart.cshtml" />
     <None Include="Views\Home\Vue02.cshtml" />
+    <Content Include="vue-shopping-cart\app.js" />
+    <Content Include="vue-shopping-cart\img\arrow-default.png" />
+    <Content Include="vue-shopping-cart\img\arrow-down.png" />
+    <Content Include="vue-shopping-cart\img\arrow-up.png" />
+    <Content Include="vue-shopping-cart\img\preview.png" />
+    <Content Include="vue-shopping-cart\index.html" />
+    <Content Include="vue-shopping-cart\main.css" />
+    <Content Include="vue-shopping-cart\vue.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

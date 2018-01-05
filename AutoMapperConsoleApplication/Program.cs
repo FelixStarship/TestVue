@@ -34,9 +34,9 @@ namespace AutoMapperConsoleApplication
                        new Product { Name = "apple", Code = 9 },
                        new Product { Name = "lemon", Code = 12 } };
 
-           
 
-           
+
+            
             IEnumerable<Product> noduplicates =
                 products.Distinct(new ProductComparer());
 

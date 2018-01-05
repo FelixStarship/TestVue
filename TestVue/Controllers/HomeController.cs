@@ -36,5 +36,14 @@ namespace TestVue.Controllers
         {
             return View();
         }
+        public ActionResult jsTest()
+        {
+            return View();
+        }
+
+        public ActionResult ShoppingCart()
+        {
+            return View();
+        }
     }
 }
