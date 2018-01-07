@@ -37,10 +37,67 @@
                                 <span>¥<b>{{item.price}}</b></span>
                             </div>
                             <span class="des">{{item.sales}}人付款</span>
-                            <span class="save"></span>
+                            <span class="save" v-on:click="addToCart(item)">+</span>
                         </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+        <div class="device" id="cart-page">
+            <header>
+                <span class="header-title">购物清单</span>
+                <span class="header-edit" v-on:click="toggleDelBtn">
+                    <span v-show="!delFlag">编辑</span>
+                    <span v-show="delFlag">完成</span>
+                </span>
+            </header>
+            <div class="page">
+                <div class="empty-states" v-if="cart.length===0">
+                    <span>这里是空的，快去逛逛吧</span>
+                </div>
+                <ul class="goods-list cart-list" v-else>
+                    <li class="goods-item" v-for="(item,index) in cart">
+                        <div class="item-selector">
+                            <div class="icon-selector" v-bind:class="{'selector-active':item.checked}" v-on:click="selectGoods(item)">
+                                <svg t="1504061791962" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2922" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12">
+                                    <path d="M908.288 127.488l-537.6 537.6-254.976-254.976L0 525.824l254.976 254.976 115.712 115.712L486.4 780.8l537.6-537.6z"
+                                          fill="#ffffff" p-id="2923"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="goods-img">
+                            <img v-bind:src="item.img" v-bind:alt="item.name">
+                        </div>
+                        <div class="goods-info">
+                            <p class="goods-title">{{item.name}}</p>
+                            <div class="goods-price">
+                                <span>¥<b>{{item.price}}</b></span>
+                            </div>
+                            <span class="des">库存{{item.stock}}件</span>
+                            <div class="goods-num">
+                                <div class="num-btn" v-on:click="changeQty(true,item)">+</div>
+                                <div class="show-num">{{item.quantity}}</div>
+                                <div class="num-btn" v-on:click="changeQty(false,item)">-</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="action-bar" v-bind:class="{'del-box':delFlag}">
+                <div class="g-selector" v-on:click="checkAll">
+                    <div class="item-selector">
+                        <div class="icon-selector" v-bind:class="{'selector-active':checkAllFlag}">
+                            <svg t="1504061791962" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2922" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12">
+                                <path d="M908.288 127.488l-537.6 537.6-254.976-254.976L0 525.824l254.976 254.976 115.712 115.712L486.4 780.8l537.6-537.6z"
+                                      fill="#ffffff" p-id="2923"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>全选</span>
+                </div>
+                <div class="action-btn buy-btn">去结算({{selectedNum}})</div>
+                <div class="action-btn del-btn" v-on:click="delGoods">删除({{selectedNum}})</div>
+                <div class="total">合计：<span>¥<b>{{totalPrice}}</b></span></div>
             </div>
         </div>
     </div>
@@ -67,20 +124,20 @@
                 ],
                 goods: [{
                     id: 1001,
-                    name: "Beats EP头戴耳机头",
+                    name: 'Beats EP头戴式耳机',
                     price: 558,
                     type: 4,
                     stock: 128,
                     sales: 1872,
-                    img: "http://img11.360buyimg.com/n1/s528x528_jfs/t3109/194/2435573156/46587/e0e867ac/57e10978N87220944.jpg!q70.jpg"
+                    img: 'http://img11.360buyimg.com/n1/s528x528_jfs/t3109/194/2435573156/46587/e0e867ac/57e10978N87220944.jpg!q70.jpg'
                 }, {
                     id: 1002,
-                    name: "雀巢（Nestle）高钙成人奶粉",
-                    price: 600,
+                    name: '雀巢（Nestle）高钙成人奶粉',
+                    price: 60,
                     type: 3,
                     stock: 5,
-                    sales: 2344,
-                    img: "http://m.360buyimg.com/babel/jfs/t5197/28/400249159/97561/304ce550/58ff0dbeN88884779.jpg!q50.jpg.webp"
+                    sales: 2374,
+                    img: 'http://m.360buyimg.com/babel/jfs/t5197/28/400249159/97561/304ce550/58ff0dbeN88884779.jpg!q50.jpg.webp'
                 }, {
                     id: 1003,
                     name: '煎炒烹炸一锅多用',
@@ -175,7 +232,7 @@
                     this.cate_index = index;
                     this.setList();
                     var filterIndex = this.filter_index;
-                    (filterIndex === 2) && (this.price_isAsc = !this.price_isAsc);
+                    (filterIndex === 2) && (this.price_isAsc = !this.price_isAsc);   //状态值取反
                     this.sortBy(this.sortMethods[filterIndex].method);
                 },
                 sortBy: function (method) {   //遍历
@@ -189,6 +246,7 @@
                 sortPrice: function () {
                     var type = this.price_isAsc ? "desc" : "asc";
                     this.list.sort(this.compare("price", type));
+                    this.price_isAsc = !this.price_isAsc;
                 },
                 sortSales:function(){
                     this.list.sort(this.compare("Sales"));
@@ -220,9 +278,100 @@
                             return 0;
                         }
                     }
-                },
+                },          /**
+                            *    @@添加到购物车
+                            */
+                addToCart: function (goods) {
+                    var alreadyIndex = Cart.cart.findIndex(function (item,index) {
+                        return item.id===goods.id;
+                    });
+                    if (alreadyIndex == -1) {
+                        var cartIndex = Cart.cart.length;
+                        Cart.cart.push(goods);
+                        Cart.$set(Cart.cart[cartIndex], "quantity", 1);
+                        Cart.$set(Cart.cart[cartIndex], "subtotal", goods.price.toFixed(1));
+                        Cart.$set(Cart.cart[cartIndex], "checked", false);
+                        Cart.checkAllFlag = false;
+                        return;
+                    }
+                    var alreadyGoods = Cart.cart[alreadyIndex];
+                    var num = alreadyGoods.quantity;
+                    var stock = alreadyGoods.stock;
+                    if (num < stock) {
+                        Cart.$set(alreadyGoods, "quantity", ++alreadyGoods.quantity);
+                        Cart.$set(alreadyGoods, "subtotal", (alreadyGoods.price * alreadyGoods.quantity).toFixed(1));
+                    }
+                }
             }
         });
+
+
+        var Cart = new Vue({
+            el: "#cart-page",
+            data: {
+                checkAllFlag: false,
+                selectedNum: 0,
+                delFlag: false,
+                cart:[]
+            },
+            methods: {
+                changeQty: function (isAdd,item) {
+                    var num = item.quantity;
+                    stock = item.stock;
+                    if (isAdd && num < stock) {
+                        this.$set(item, 'quantity', ++num);
+                    } else if (!isAdd && num > 1) {
+                        this.$set(item,"quantity",--num);
+                    }
+                    this.$set(item, "subtotal", (item.price * num).toFixed(1));
+                },
+                selectGoods: function (item) {
+                    item.checked = !item.checked;   //状态值取反
+                    item.checked ? ++this.selectedNum : --this.selectedNum;
+                    this.selectedNum === this.cart.length
+                        ? this.checkAllFlag = true
+                        : this.checkAllFlag = false;
+
+                },
+                checkAll: function () {
+                    var self = this;
+                    this.checkAllFlag = !this.checkAllFlag;
+                    this.cart.forEach(function (item) {
+                        if (self.checkAllFlag) {
+                            item.checked = true;
+                            self.selectedNum = self.cart.length;
+                        } else {
+                            item.checked = false;
+                            self.selectedNum = 0;
+                        }
+                    })
+                },
+                toggleDelBtn: function () {
+                    this.delFlag = !this.delFlag;
+                },        /**
+                          * @@过滤器取反改变cart中checked选中状态
+                          */
+                delGoods: function () {
+                    var cart = this.cart;
+                    this.cart = cart.filter(function (item) {
+                        return !item.checked;
+                    });
+                    this.selectedNum = 0;
+                    this.checkAllFlag = false;
+                    this.delFlag = !this.delFlag;
+                }
+            },    //计算属性
+            computed: {
+                totalPrice: function () {
+                    var num = 0;
+                    this.cart.forEach(function (item) {
+                        item.checked && (num += parseFloat(item.subtotal));
+                    });
+                    return num;
+                }
+            }
+        });
+
     </script>
 </body>
 </html>
