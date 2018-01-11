@@ -26,9 +26,6 @@ namespace AutoMapperConsoleApplication
             var arrayList = new List<string> { "10", "20" };
 
 
-
-
-
             Product[] products = { new Product { Name = "apple", Code = 9 },
                        new Product { Name = "orange", Code = 4 },
                        new Product { Name = "apple", Code = 9 },
@@ -49,10 +46,37 @@ namespace AutoMapperConsoleApplication
 
 
 
-
+            /*SortedDictionary<string, Table> tableSc = new SortedDictionary<string, Table>();
+            foreach (var table in item.Tables)
+            {
+                Dictionary<string, Column> col = new Dictionary<string, Column>();
+                foreach (var column in table.Fields)
+                {
+                    Column value = new Column();
+                    value.Name = column.Id;
+                    col.Add(column.Id, value);
+                }
+                tableSc.Add(table.Id, (Table)col);
+            }*/
 
         }
     }
+
+    public class Column
+    {
+        public string Name
+        {
+            get;set;
+        }
+    }
+
+    public class Table : Dictionary<string, Column>
+    {
+
+    }
+
+
+
 
     public class Product
     {

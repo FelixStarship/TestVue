@@ -204,6 +204,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RSACrypto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -228,6 +229,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jsencrypt.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -236,6 +238,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Home\jsTest.cshtml" />
     <Content Include="Views\Home\ShoppingCart.cshtml" />
+    <Content Include="Views\Home\JSEncrypt.cshtml" />
     <None Include="Views\Home\Vue02.cshtml" />
     <Content Include="vue-shopping-cart\app.js" />
     <Content Include="vue-shopping-cart\img\arrow-default.png" />
